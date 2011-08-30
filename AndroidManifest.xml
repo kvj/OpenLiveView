@@ -21,7 +21,13 @@
             android:name=".LogViewActivity" />
         <service
             android:name=".service.LiveViewService" />
-        <receiver
+        <receiver android:name=".service.StartupReceiver">
+        	<intent-filter>
+        		<action android:name="android.intent.action.BOOT_COMPLETED" />
+        		<category android:name="android.intent.category.HOME" />
+        	</intent-filter>
+        </receiver>
+<!--         <receiver
             android:name=".service.BTReceiver">
             <intent-filter>
                 <action
@@ -31,7 +37,7 @@
                 <action
                     android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED" />
             </intent-filter>
-        </receiver>
+        </receiver> -->
         <provider
             android:name=".data.LiveViewDataProvider"
             android:authorities="net.sourcewalker.olv" />
@@ -40,4 +46,8 @@
         android:minSdkVersion="8" />
     <uses-permission
         android:name="android.permission.BLUETOOTH" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission 
+    	android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

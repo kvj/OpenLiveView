@@ -7,9 +7,9 @@ public class SetMenuSize extends LiveViewCall {
 
     private final byte menuSize;
 
-    public SetMenuSize(byte menuSize) {
+    public SetMenuSize(int menuSize) {
         super(MessageConstants.MSG_SETMENUSIZE);
-        this.menuSize = menuSize;
+        this.menuSize = (byte) menuSize;
     }
 
     /*

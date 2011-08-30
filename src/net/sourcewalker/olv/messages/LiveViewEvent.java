@@ -10,4 +10,8 @@ public abstract class LiveViewEvent extends LiveViewMessage {
 
     public abstract void readData(ByteBuffer buffer);
 
+    @Override
+    public String toString() {
+    	return "LiveViewEvent["+getClass().getSimpleName()+"]: "+getId();
+    }
 }

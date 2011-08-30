@@ -4,19 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.kvj.bravo7.ControllerConnector;
+import org.kvj.bravo7.ControllerConnector.ControllerReceiver;
+
+import net.sourcewalker.olv.service.LVController;
+import net.sourcewalker.olv.service.LiveViewService;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class LiveViewPreferences extends PreferenceActivity {
+public class LiveViewPreferences extends PreferenceActivity implements ControllerReceiver<LVController>{
 
-    private BluetoothAdapter btAdapter;
+    private static final String TAG = "LiveViewPreferences";
+	private BluetoothAdapter btAdapter;
     private ListPreference devicePreference;
+    ControllerConnector<LVController, LiveViewService> connector = 
+    		new ControllerConnector<LVController, LiveViewService>(this, this);
+	private LVController controller = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -28,6 +40,15 @@ public class LiveViewPreferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         devicePreference = (ListPreference) findPreference(getString(R.string.prefs_deviceaddress_key));
+		Intent i = new Intent(this, LiveViewService.class);
+        startService(i);
+    }
+    
+    @Override
+    protected void onStart() {
+    	Log.i(TAG, "Connecting controller");
+        connector.connectController(LiveViewService.class);    	
+    	super.onStart();
     }
 
     /*
@@ -77,7 +98,18 @@ public class LiveViewPreferences extends PreferenceActivity {
         case R.id.menu_viewlog:
             startActivity(new Intent(this, LogViewActivity.class));
             break;
+        case R.id.menu_ping:
+        	if (!controller.ping()) {
+				Toast.makeText(getApplicationContext(), "Ping failed", Toast.LENGTH_LONG).show();
+			}
+            break;
         }
         return true;
     }
+
+	@Override
+	public void onController(LVController controller) {
+		Log.i(TAG, "We have controller!");
+		this.controller  = controller;
+	}
 }

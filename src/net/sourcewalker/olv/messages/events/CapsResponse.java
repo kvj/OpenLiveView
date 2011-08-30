@@ -149,7 +149,15 @@ public class CapsResponse extends LiveViewEvent {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("width = " + width + "; ");
-        sb.append("height = " + height);
+        sb.append("height = " + height+"; ");
+        sb.append("statusBarWidth = " + statusBarWidth+"; ");
+        sb.append("statusBarHeight = " + statusBarHeight+"; ");
+        sb.append("viewWidth = " + viewWidth+"; ");
+        sb.append("viewHeight = " + viewHeight+"; ");
+        sb.append("announceWidth = " + announceWidth+"; ");
+        sb.append("announceHeight = " + announceHeight+"; ");
+        sb.append("textChunkSize = " + textChunkSize+"; ");
+        sb.append("idleTimer = " + idleTimer);
         return sb.toString();
     }
 
